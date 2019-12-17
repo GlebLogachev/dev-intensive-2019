@@ -98,14 +98,10 @@ object Utils {
 
     }
 
-    fun toInitials(firstName: String?, lastName: String?): String? {
-
-        val initial_1: String? = firstName?.first().toString()
-        val initial_2: String? = lastName?.first().toString()
-        if (initial_1.isNullOrEmpty() && initial_2.isNullOrEmpty()) return null
-        else if (initial_1.isNullOrEmpty()) return initial_2
-        else if (initial_2.isNullOrEmpty()) return initial_1
-        else return (initial_1.toUpperCase() + initial_2.toUpperCase())
-        //return Pair (initial_1, initial_2).toString()
+    fun toInitials(firstName: String?, lastName: String?):String?{
+        val initial_1 = firstName?.trim()?.getOrNull(0)
+        val initial_2 = lastName?.trim()?.getOrNull(0)
+        val result = listOfNotNull(initial_1, initial_2).joinToString("")
+        return if(result == "") null else result.toUpperCase()
     }
 }
