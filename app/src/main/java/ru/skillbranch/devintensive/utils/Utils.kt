@@ -1,23 +1,25 @@
 package ru.skillbranch.devintensive.utils
 
-import java.lang.StringBuilder
-import java.util.*
-import kotlin.collections.Map as Map1
-
-/* все методы, которые объявлены в данном объекте, будут доступны к доступу в любой части нашего кода
-утилитная функция, или утилитный метод
-+ у нас есть в2 строенных дата класса: это Pair и Triple*/
-object Utils {
-    fun parseFullName(fullName: String?): Pair<String?, String?> {
+object  Utils {
+    fun parseFullName(fullName: String?):Pair<String?, String?>{
         val parts: List<String>? = fullName?.split(" ")
-        var firsName = parts?.getOrNull(0)
-        var lastName = parts?.getOrNull(1)
-        if (firsName == null || firsName.length == 0) firsName = null
-        if (lastName == null || lastName.length == 0) lastName = null
-        return Pair(firsName, lastName)
 
+        var firstName = parts?.getOrNull(0)
+        var lastName = parts?.getOrNull(1)
+        if(firstName?.length == 0) firstName = null
+        if(lastName?.length == 0) lastName = null
+        return firstName to lastName
     }
-    fun cyrilicToLatin(c:Char):String{
+
+    fun toInitials(firstName: String?, lastName: String?):String?{
+        val f = firstName?.trim()?.getOrNull(0)
+        val l = lastName?.trim()?.getOrNull(0)
+        val result = listOfNotNull(f, l).joinToString("")
+        return if(result == "") null else result.toUpperCase()
+    }
+
+
+    private fun cyrilicToLatin(c:Char):String{
         return when (c) {
             'а' -> "a"
             'б' -> "b"
@@ -89,23 +91,12 @@ object Utils {
         }
     }
 
-    fun transliteration(payload: String, divider: String = " "): String {
+    fun transliteration(payload: String?, divider :String = " "):String?{
         val sb = StringBuilder()
         payload?.forEach()
-        { sb.append(if(it == ' ') divider else cyrilicToLatin(it))
+        {
+            sb.append(if(it == ' ') divider else cyrilicToLatin(it))
         }
         return sb.toString()
-
-    }
-
-    fun toInitials(firstName: String?, lastName: String?): String? {
-
-        val initial_1: String? = firstName?.first().toString()
-        val initial_2: String? = lastName?.first().toString()
-        if (initial_1.isNullOrEmpty() && initial_2.isNullOrEmpty()) return null
-        else if (initial_1.isNullOrEmpty()) return initial_2
-        else if (initial_2.isNullOrEmpty()) return initial_1
-        else return (initial_1.toUpperCase() + initial_2.toUpperCase())
-        //return Pair (initial_1, initial_2).toString()
     }
 }

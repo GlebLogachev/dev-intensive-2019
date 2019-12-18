@@ -3,48 +3,98 @@ package ru.skillbranch.devintensive.models
 import ru.skillbranch.devintensive.utils.Utils
 import java.util.*
 
-// стоит отметить, что только те св-ва, которые обозначены в первич. конструкторы будут преобразованы
-// в String (см. тест factory)
-/*№ 1 */data class User(
-    val id: String,
-    var firstName: String?,
+data class User(
+    val id:String,
+    var firstName:String?,
     var lastName: String?,
     var avatar: String?,
-    var rating: Int = 0,
+    var rating:Int = 0,
     var respect: Int = 0,
-    val lastVisit: Date? = Date(),
-    val isOnline: Boolean = false
+    val lastVisit:Date? = Date(),
+    val isOnline:Boolean = false
 ) {
-
-
     constructor(id: String, firstName: String?, lastName: String?) : this(
-       id = id,
-       firstName = firstName,
-       lastName = lastName,
-       avatar = null
+        id = id,
+        firstName = firstName,
+        lastName = lastName,
+        avatar = null
     )
 
     constructor(id: String) : this(id, "John", "Doe")
 
-    init {
-
-        println(
-            "It`s Allive !!! \n " +
-                    "${if (lastName === "Doe") "His name id $firstName $lastName" else "And his name is $firstName $lastName"}\n"
+    init{
+        println("It's Alive!!!\n" +
+                "${if(lastName == "Doe") "His name id $firstName $lastName" else "And his name is $firstName $lastName!!!"}\n"
         )
     }
 
-    /* будем использовать паттерн фабрика. Он удобен в тех случаях
-        когда перед созданем объекта нам необходимо отформатировать код. Создавать пользователя через
-        конструктор не всегда удобно*/
-    companion object Factory {
-        private var lastId: Int = -1
+    fun printMe() = println("""
+            id: $id
+            firstName: $firstName
+            lastName: $lastName
+            avatar: $avatar
+            rating: $rating
+            respect: $respect
+            lastVisit: $lastVisit
+            isOnline: $isOnline
+        """.trimIndent())
 
-        fun makeUser(fullName: String?): User {
+    companion object Factory{
+        private var lastId : Int = -1
+        fun makeUser(fullName: String?) : User {
             lastId++
-            // Деструктурное присваивание!!  :
             val (firstName, lastName) = Utils.parseFullName(fullName)
+
             return User(id = "$lastId", firstName = firstName, lastName = lastName)
+        }
+    }
+
+    class Builder(){
+        var id:String = "-1"
+        var firstName:String? = null
+        var lastName: String? = null
+        var avatar: String? = null
+        var rating:Int = 0
+        var respect: Int = 0
+        var lastVisit:Date = Date()
+        var isOnline:Boolean = false
+
+        fun id(s:String):Builder{
+            id = s
+            return this
+        }
+
+        fun firstName(s:String?):Builder{
+            firstName = s
+            return this
+        }
+        fun lastName(s:String?):Builder{
+            lastName = s
+            return this
+        }
+        fun avatar(s:String?):Builder{
+            avatar = s
+            return this
+        }
+        fun rating(n:Int):Builder{
+            rating = n
+            return this
+        }
+        fun respect(n:Int):Builder{
+            respect = n
+            return this
+        }
+        fun lastVisit(d:Date):Builder{
+            lastVisit = d
+            return this
+        }
+        fun isOnline(b:Boolean):Builder{
+            isOnline = b
+            return this
+        }
+        fun build():User{
+            lastId++
+            return User(id, firstName, lastName, avatar, rating, respect, lastVisit, isOnline)
         }
     }
 }
