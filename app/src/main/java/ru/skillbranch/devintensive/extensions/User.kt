@@ -2,23 +2,23 @@ package ru.skillbranch.devintensive.extensions
 
 import ru.skillbranch.devintensive.models.User
 import ru.skillbranch.devintensive.models.UserView
-import ru.skillbranch.devintensive.utils.Utils
-import java.util.*
 
-/*Создаем extension функцию, метод, которая будет превращть наш экземляр data класа User в объект
-UserView и будет возвращать объект UserView*/
-fun User.toUserView (): UserView {
-val nickName = Utils.transliteration("$firstName $lastName")
-val initials = Utils.toInitials (firstName, lastName)
-val status = if (lastVisit==null) "Ещё ни разу не был" else if (isOnline) "онлайн" else "не онлайн"
+fun User.toUserView(): UserView{
+
+    val nickName = ""
+    val initials = ""
+    val status = if (lastVisit == null) "Ни разу не был" else if (isOnline) "online" else "Последний раз был ${humanizeDiff()}"
+
     return UserView(
-    id,
-    fullName = "$firstName $lastName" ,
-    avatar = avatar,
-    nickName = nickName ,
-    initials =initials,
-    status = status)
-// как мы видим, не пишем никаких конструкторов типа this итд. Идентификатор класса User автоматически
-// замапился на идентификатор конструктора UserView
+        id,
+        fullName = "$firstName $lastName",
+        nickName = nickName,
+        initials = initials,
+        avatar = avatar,
+        status = status
+    )
 }
 
+fun humanizeDiff(): String {
+    return ""
+}
